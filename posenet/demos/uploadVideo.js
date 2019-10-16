@@ -11,13 +11,23 @@ var reader;
 var progress = document.querySelector('.percent');
 var videoInput = document.getElementById('videoInput');
 var video = document.getElementById('video');
+var video_Time;
 //filesave.js var
 var _global = typeof window === 'object' && window.window === window
   ? window : typeof self === 'object' && self.self === self
   ? self : typeof global === 'object' && global.global === global
   ? global
   : this
+/*
+var fso=new ActiveXObject(Scripting.FileSystemObject); 
+var f=fso.createtextfile("C:\Users\windows\Desktop\output file\testing.txt",2,true); 
 
+
+ var filename = "testing1234.txt";
+var str = "TestingFile";
+var content = str;
+var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+saveAs(blob, filename);*/
 
 function errorHandler(evt) {
   switch(evt.target.error.code) {
@@ -603,6 +613,9 @@ if (typeof module !== 'undefined') {
   module.exports = saveAs;
 }
 
+    //var filename = "testing.txt";
+    //var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+    //saveAs(blob, filename);
 
     // For each pose (i.e. person) detected in an image, loop through the poses
     // and draw the resulting skeleton and keypoints if over certain confidence
@@ -613,12 +626,18 @@ if (typeof module !== 'undefined') {
           drawKeypoints(keypoints, minPartConfidence, ctx);
           console.log(keypoints);//17 keypoints to be saved~
           
-          //将每一个点都马上生成一个独立的txt file
+          
+          var filename = "testing.txt";
           var str = JSON.stringify(keypoints);
           var content = str;
-          var filename = "output"++".txt";
           var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
           saveAs(blob, filename);
+          
+          
+
+          //f.WriteLine(str); 
+          //f.close();
+          
 
 
         }
