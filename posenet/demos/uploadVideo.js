@@ -18,6 +18,18 @@ var _global = typeof window === 'object' && window.window === window
   ? self : typeof global === 'object' && global.global === global
   ? global
   : this
+
+
+  var buffer_array = [];
+  var temp=[];
+  var filename ;
+  var str;
+         
+  var content;
+  var blob;
+
+
+
 /*
 var fso=new ActiveXObject(Scripting.FileSystemObject); 
 var f=fso.createtextfile("C:\Users\windows\Desktop\output file\testing.txt",2,true); 
@@ -56,6 +68,13 @@ function updateProgress(evt) {
   }
 }
 
+
+  
+
+
+
+
+
 function handleFileSelect(evt) {
   if (!evt.target.files[0].type.match('video.*')) {
       alert("Please input video!");
@@ -86,6 +105,8 @@ function handleFileSelect(evt) {
 
 document.getElementById('videoFiles').addEventListener('change', handleFileSelect, false);
 //Video element listener
+
+
 videoInput.addEventListener('loadeddata', function(e) {
   // Get video width and height when loadeddata is listened
   videoWidth = e.target.videoWidth;
@@ -325,137 +346,7 @@ function setupFPS() {
   document.getElementById('main').appendChild(stats.dom);
 }
 
-
-function detectPoseInRealTime(video, net) {
-  const canvas = document.getElementById('output');
-  const ctx = canvas.getContext('2d');
-
-  const flipPoseHorizontal = true;
-
-  canvas.width = videoWidth;
-  canvas.height = videoHeight;
-
-  async function poseDetectionFrame() {
-    if (guiState.changeToArchitecture) {
-      // Important to purge variables and free up GPU memory
-      guiState.net.dispose();
-      toggleLoadingUI(true);
-      guiState.net = await posenet.load({
-        architecture: guiState.changeToArchitecture,
-        outputStride: guiState.outputStride,
-        inputResolution: guiState.inputResolution,
-        multiplier: guiState.multiplier,
-      });
-      toggleLoadingUI(false);
-      guiState.architecture = guiState.changeToArchitecture;
-      guiState.changeToArchitecture = null;
-    }
-
-    if (guiState.changeToMultiplier) {
-      guiState.net.dispose();
-      toggleLoadingUI(true);
-      guiState.net = await posenet.load({
-        architecture: guiState.architecture,
-        outputStride: guiState.outputStride,
-        inputResolution: guiState.inputResolution,
-        multiplier: +guiState.changeToMultiplier,
-        quantBytes: guiState.quantBytes
-      });
-      toggleLoadingUI(false);
-      guiState.multiplier = +guiState.changeToMultiplier;
-      guiState.changeToMultiplier = null;
-    }
-
-    if (guiState.changeToOutputStride) {
-      // Important to purge variables and free up GPU memory
-      guiState.net.dispose();
-      toggleLoadingUI(true);
-      guiState.net = await posenet.load({
-        architecture: guiState.architecture,
-        outputStride: +guiState.changeToOutputStride,
-        inputResolution: guiState.inputResolution,
-        multiplier: guiState.multiplier,
-        quantBytes: guiState.quantBytes
-      });
-      toggleLoadingUI(false);
-      guiState.outputStride = +guiState.changeToOutputStride;
-      guiState.changeToOutputStride = null;
-    }
-
-    if (guiState.changeToInputResolution) {
-      // Important to purge variables and free up GPU memory
-      guiState.net.dispose();
-      toggleLoadingUI(true);
-      guiState.net = await posenet.load({
-        architecture: guiState.architecture,
-        outputStride: guiState.outputStride,
-        inputResolution: +guiState.changeToInputResolution,
-        multiplier: guiState.multiplier,
-        quantBytes: guiState.quantBytes
-      });
-      toggleLoadingUI(false);
-      guiState.inputResolution = +guiState.changeToInputResolution;
-      guiState.changeToInputResolution = null;
-    }
-
-    if (guiState.changeToQuantBytes) {
-      // Important to purge variables and free up GPU memory
-      guiState.net.dispose();
-      toggleLoadingUI(true);
-      guiState.net = await posenet.load({
-        architecture: guiState.architecture,
-        outputStride: guiState.outputStride,
-        inputResolution: guiState.inputResolution,
-        multiplier: guiState.multiplier,
-        quantBytes: guiState.changeToQuantBytes
-      });
-      toggleLoadingUI(false);
-      guiState.quantBytes = guiState.changeToQuantBytes;
-      guiState.changeToQuantBytes = null;
-    }
-
-    // Begin monitoring code for frames per second
-    stats.begin();
-
-    let poses = [];
-    let minPoseConfidence;
-    let minPartConfidence;
-    switch (guiState.algorithm) {
-      case 'single-pose':
-        const pose = await guiState.net.estimatePoses(video, {
-          flipHorizontal: flipPoseHorizontal,
-          decodingMethod: 'single-person'
-        });
-        poses = poses.concat(pose);
-        minPoseConfidence = +guiState.singlePoseDetection.minPoseConfidence;
-        minPartConfidence = +guiState.singlePoseDetection.minPartConfidence;
-        break;
-      case 'multi-pose':
-        let all_poses = await guiState.net.estimatePoses(video, {
-          flipHorizontal: flipPoseHorizontal,
-          decodingMethod: 'multi-person',
-          maxDetections: guiState.multiPoseDetection.maxPoseDetections,
-          scoreThreshold: guiState.multiPoseDetection.minPartConfidence,
-          nmsRadius: guiState.multiPoseDetection.nmsRadius
-        });
-
-        poses = poses.concat(all_poses);
-        minPoseConfidence = +guiState.multiPoseDetection.minPoseConfidence;
-        minPartConfidence = +guiState.multiPoseDetection.minPartConfidence;
-        break;
-    }
-
-    ctx.clearRect(0, 0, videoWidth, videoHeight);
-
-    if (guiState.output.showVideo) {
-      ctx.save();
-      ctx.scale(-1, 1);
-      ctx.translate(-videoWidth, 0);
-      ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
-      ctx.restore();
-    }
-
-    /*
+  /*
 * FileSaver.js
 * A saveAs() FileSaver implementation.
 *
@@ -613,9 +504,143 @@ if (typeof module !== 'undefined') {
   module.exports = saveAs;
 }
 
-    //var filename = "testing.txt";
-    //var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-    //saveAs(blob, filename);
+//end of filesaver code
+  /*
+    var filename = "testing_label.txt";
+    //var str = JSON.stringify(keypoints);
+    var content = "testing";
+    var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, filename);
+*/
+
+function detectPoseInRealTime(video, net) {
+  const canvas = document.getElementById('output');
+  const ctx = canvas.getContext('2d');
+
+  const flipPoseHorizontal = true;
+
+  canvas.width = videoWidth;
+  canvas.height = videoHeight;
+
+  async function poseDetectionFrame() {
+    if (guiState.changeToArchitecture) {
+      // Important to purge variables and free up GPU memory
+      guiState.net.dispose();
+      toggleLoadingUI(true);
+      guiState.net = await posenet.load({
+        architecture: guiState.changeToArchitecture,
+        outputStride: guiState.outputStride,
+        inputResolution: guiState.inputResolution,
+        multiplier: guiState.multiplier,
+      });
+      toggleLoadingUI(false);
+      guiState.architecture = guiState.changeToArchitecture;
+      guiState.changeToArchitecture = null;
+    }
+
+    if (guiState.changeToMultiplier) {
+      guiState.net.dispose();
+      toggleLoadingUI(true);
+      guiState.net = await posenet.load({
+        architecture: guiState.architecture,
+        outputStride: guiState.outputStride,
+        inputResolution: guiState.inputResolution,
+        multiplier: +guiState.changeToMultiplier,
+        quantBytes: guiState.quantBytes
+      });
+      toggleLoadingUI(false);
+      guiState.multiplier = +guiState.changeToMultiplier;
+      guiState.changeToMultiplier = null;
+    }
+
+    if (guiState.changeToOutputStride) {
+      // Important to purge variables and free up GPU memory
+      guiState.net.dispose();
+      toggleLoadingUI(true);
+      guiState.net = await posenet.load({
+        architecture: guiState.architecture,
+        outputStride: +guiState.changeToOutputStride,
+        inputResolution: guiState.inputResolution,
+        multiplier: guiState.multiplier,
+        quantBytes: guiState.quantBytes
+      });
+      toggleLoadingUI(false);
+      guiState.outputStride = +guiState.changeToOutputStride;
+      guiState.changeToOutputStride = null;
+    }
+
+    if (guiState.changeToInputResolution) {
+      // Important to purge variables and free up GPU memory
+      guiState.net.dispose();
+      toggleLoadingUI(true);
+      guiState.net = await posenet.load({
+        architecture: guiState.architecture,
+        outputStride: guiState.outputStride,
+        inputResolution: +guiState.changeToInputResolution,
+        multiplier: guiState.multiplier,
+        quantBytes: guiState.quantBytes
+      });
+      toggleLoadingUI(false);
+      guiState.inputResolution = +guiState.changeToInputResolution;
+      guiState.changeToInputResolution = null;
+    }
+
+    if (guiState.changeToQuantBytes) {
+      // Important to purge variables and free up GPU memory
+      guiState.net.dispose();
+      toggleLoadingUI(true);
+      guiState.net = await posenet.load({
+        architecture: guiState.architecture,
+        outputStride: guiState.outputStride,
+        inputResolution: guiState.inputResolution,
+        multiplier: guiState.multiplier,
+        quantBytes: guiState.changeToQuantBytes
+      });
+      toggleLoadingUI(false);
+      guiState.quantBytes = guiState.changeToQuantBytes;
+      guiState.changeToQuantBytes = null;
+    }
+
+    // Begin monitoring code for frames per second
+    stats.begin();
+
+    let poses = [];
+    let minPoseConfidence;
+    let minPartConfidence;
+    switch (guiState.algorithm) {
+      case 'single-pose':
+        const pose = await guiState.net.estimatePoses(video, {
+          flipHorizontal: flipPoseHorizontal,
+          decodingMethod: 'single-person'
+        });
+        poses = poses.concat(pose);
+        minPoseConfidence = +guiState.singlePoseDetection.minPoseConfidence;
+        minPartConfidence = +guiState.singlePoseDetection.minPartConfidence;
+        break;
+      case 'multi-pose':
+        let all_poses = await guiState.net.estimatePoses(video, {
+          flipHorizontal: flipPoseHorizontal,
+          decodingMethod: 'multi-person',
+          maxDetections: guiState.multiPoseDetection.maxPoseDetections,
+          scoreThreshold: guiState.multiPoseDetection.minPartConfidence,
+          nmsRadius: guiState.multiPoseDetection.nmsRadius
+        });
+
+        poses = poses.concat(all_poses);
+        minPoseConfidence = +guiState.multiPoseDetection.minPoseConfidence;
+        minPartConfidence = +guiState.multiPoseDetection.minPartConfidence;
+        break;
+    }
+
+    ctx.clearRect(0, 0, videoWidth, videoHeight);
+
+    if (guiState.output.showVideo) {
+      ctx.save();
+      ctx.scale(-1, 1);
+      ctx.translate(-videoWidth, 0);
+      ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
+      ctx.restore();
+    }
 
     // For each pose (i.e. person) detected in an image, loop through the poses
     // and draw the resulting skeleton and keypoints if over certain confidence
@@ -626,19 +651,22 @@ if (typeof module !== 'undefined') {
           drawKeypoints(keypoints, minPartConfidence, ctx);
           console.log(keypoints);//17 keypoints to be saved~
           
-          
-          var filename = "testing.txt";
+          //file path: "C:/Users/windows/Desktop/output_file/testing_label.txt"
+          //array name is buffer_array
+
+          //we save every keypoints in our buffer_array and then print the buffer array which containing all the keypoints 
+          /*var filename = "testing_label.txt";
           var str = JSON.stringify(keypoints);
-          var content = str;
-          var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-          saveAs(blob, filename);
-          
-          
+          buffer_array[buffer_array.length] = str;
+          var content = buffer_array;
+          var blob = new Blob([content], {type: "text/plain;charset=utf-8"});*/
+          //saveAs(blob, filename)
 
-          //f.WriteLine(str); 
-          //f.close();
-          
-
+          filename = "testing_label.txt";
+          str = JSON.stringify(keypoints);
+          buffer_array[buffer_array.length] = str;
+          //content = buffer_array;
+          //blob = new Blob([content], {type: "text/plain;charset=utf-8"});
 
         }
         if (guiState.output.showSkeleton) {
@@ -658,6 +686,17 @@ if (typeof module !== 'undefined') {
 
   poseDetectionFrame();
 }
+  //try to download the label file
+  //
+
+  content = buffer_array;
+  blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+  document.getElementById('downloader_button').addEventListener('click', function(){
+    saveAs(blob, filename);
+  });
+
+
+
 
 export async function bindPage() {
   toggleLoadingUI(true);
