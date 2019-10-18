@@ -91,105 +91,47 @@
         }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <div id="info" style='display:none'>
-    </div>
-    <div id="loading" style='display:flex'>
-        <div class="spinner-text">
-            Loading PoseNet model...
-        </div>
-        <div class="sk-spinner sk-spinner-pulse"></div>
-    </div>
-    <div id='main' style='text-align:center; display:none'>
-        <video id="videoInput" style="display: none" playsinline controls loop muted></video>
-        <video id="video" style="display: none" playsinline autoplay></video>
-        <canvas id="output" />
-    </div>
-    <div class="footer">        
-        <div>
-            <section style="text-align:center;border:none; margin-top:20px;">
+	<div class="container" style="background-color: #e6f3ff">
+		<br/>
+		<h1>Feed Video</h1>
+    	<div id="info" style='display:none'>
+	    </div>
+	    <div id="loading" style='display:flex'>
+	        <div class="spinner-text">
+	            Loading PoseNet model...
+	        </div>
+	        <div class="sk-spinner sk-spinner-pulse"></div>
+	    </div>
+	    <div id='main' style='text-align:center;'>
+	        <video id="videoInput" style="display: none; width: 960px; height: 540px" playsinline controls muted></video>
+	        <video id="video" style="display: none" playsinline autoplay></video>
+	        <canvas id="output" style="border: double; border-radius: 5px; width: 960px; height: 540px;"/>
+	    </div>
+	    <div>
+            <section style="text-align:center;border:none; margin-top:5px;">
                 <input type="file" id="videoFiles"/>
             </section>
         </div>
-        <div style="text-align:center;border:none; margin-top:20px;">
-            <!--<output id="list"></output>-->
+        <div style="text-align:center;border:none; margin-top:5px;">
             <div id="progress_bar"><div class="percent">0%</div></div>
         </div>
-        <div class="footer-text">
-            <p>
-                PoseNet runs with either a <strong>single-pose</strong> or <strong>multi-pose</strong> detection
-                algorithm. The single person pose detector is faster and more accurate but requires only one subject
-                present in the image.
-                <br>
-        </div>
-    </div>
+	    <!--<div class="footer">
+	        <div class="footer-text">
+	            <p>
+	                PoseNet runs with either a <strong>single-pose</strong> or <strong>multi-pose</strong> detection
+	                algorithm. The single person pose detector is faster and more accurate but requires only one subject
+	                present in the image.
+	                <br>
+	            </p>
+	        </div>
+	    </div>-->
+	</div>
     <script src="uploadVideo.js"></script>
 </body>
-<!--<script>
-  var reader;
-  var progress = document.querySelector('.percent');
-
-  function errorHandler(evt) {
-    switch(evt.target.error.code) {
-      case evt.target.error.NOT_FOUND_ERR:
-        alert('File Not Found!');
-        break;
-      case evt.target.error.NOT_READABLE_ERR:
-        alert('File is not readable');
-        break;
-      case evt.target.error.ABORT_ERR:
-        break; // noop
-      default:
-        alert('An error occurred reading this file.');
-    };
-  }
-
-  function updateProgress(evt) {
-    // evt is an ProgressEvent.
-    if (evt.lengthComputable) {
-      var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
-      // Increase the progress bar length.
-      if (percentLoaded < 100) {
-        progress.style.width = percentLoaded + '%';
-        progress.textContent = percentLoaded + '%';
-      }
-    }
-  }
-
-  function handleFileSelect(evt) {
-    if (!evt.target.files[0].type.match('video.*')) {
-        alert("Please input video!");
-        return;
-    }
-    // Reset progress indicator on new file selection.
-    progress.style.width = '0%';
-    progress.textContent = '0%';
-
-    reader = new FileReader();
-    reader.onerror = errorHandler;
-    reader.onprogress = updateProgress;
-
-    var video = document.getElementById('video');
-  
-    reader.onloadstart = function(e) {
-      document.getElementById('progress_bar').className = 'loading';
-    };
-    reader.onload = function(e) {
-      // Ensure that the progress bar displays 100% at the end.
-      progress.style.width = '100%';
-      progress.textContent = '100%';
-      setTimeout("document.getElementById('progress_bar').className='';", 2000);
-      video.src = URL.createObjectURL(evt.target.files[0]);
-    }
-
-    // Read in the file as a binary string.
-    reader.readAsBinaryString(evt.target.files[0]);
-    //bindPage();
-    startPosenet();
-  }
-
-  document.getElementById('videoFiles').addEventListener('change', handleFileSelect, false);
-</script>-->
 </html>
