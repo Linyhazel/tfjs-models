@@ -665,8 +665,8 @@ function detectPoseInRealTime(video, net) {
           filename = "testing_label.txt";
           str = JSON.stringify(keypoints);
           buffer_array[buffer_array.length] = str;
-          //content = buffer_array;
-          //blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+          content = buffer_array;
+          blob = new Blob([content], {type: "text/plain;charset=utf-8"});
 
         }
         if (guiState.output.showSkeleton) {
@@ -689,8 +689,7 @@ function detectPoseInRealTime(video, net) {
   //try to download the label file
   //
 
-  content = buffer_array;
-  blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+  
   document.getElementById('downloader_button').addEventListener('click', function(){
     saveAs(blob, filename);
   });
