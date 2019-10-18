@@ -97,41 +97,58 @@
 </head>
 
 <body>
-	<div class="container" style="background-color: #e6f3ff">
-		<br/>
-		<h1>Feed Video</h1>
-    	<div id="info" style='display:none'>
-	    </div>
-	    <div id="loading" style='display:flex'>
-	        <div class="spinner-text">
-	            Loading PoseNet model...
-	        </div>
-	        <div class="sk-spinner sk-spinner-pulse"></div>
-	    </div>
-	    <div id='main' style='text-align:center;'>
-	        <video id="videoInput" style="display: none; width: 960px; height: 540px" playsinline controls muted></video>
-	        <video id="video" style="display: none" playsinline autoplay></video>
-	        <canvas id="output" style="border: double; border-radius: 5px; width: 960px; height: 540px;"/>
-	    </div>
-	    <div>
+    <div class="container" style="background-color: #e6f3ff">
+        <br/>
+        <h1>Feed Video</h1>
+        <div id="info" style='display:none'>
+        </div>
+        <div id="loading" style='display:flex'>
+            <div class="spinner-text">
+                Loading PoseNet model...
+            </div>
+            <div class="sk-spinner sk-spinner-pulse"></div>
+        </div>
+
+
+
+        <div id='main' style='text-align:center;'>
+            <video id="videoInput" style="display: none; width: 960px; height: 540px" playsinline controls muted></video>
+            <video id="video" style="display: none" playsinline autoplay></video>
+            <canvas id="output" style="border: double; border-radius: 5px; width: 960px; height: 540px;"/>
+        </div>
+        <div>
             <section style="text-align:center;border:none; margin-top:5px;">
                 <input type="file" id="videoFiles"/>
             </section>
         </div>
+        <div>
+            <section style="text-align:center;border:none; margin-top:30px;">
+                <input type="button" value="下载按钮" id="downloader_button"/>
+            </section>
+        </div>
+
+        <div style="text-align:center;border:none; margin-top:20px;">
+            <select id="choose" onchange="TheConfirmBox()">
+              <option value="每一帧">每一帧</option>
+              <option value="每五帧">每五帧</option>
+              <option value="每十帧">每十帧</option>
+              <option value="每十五帧">每十五帧</option>
+            </select>
+        </div>  
         <div style="text-align:center;border:none; margin-top:5px;">
             <div id="progress_bar"><div class="percent">0%</div></div>
         </div>
-	    <!--<div class="footer">
-	        <div class="footer-text">
-	            <p>
-	                PoseNet runs with either a <strong>single-pose</strong> or <strong>multi-pose</strong> detection
-	                algorithm. The single person pose detector is faster and more accurate but requires only one subject
-	                present in the image.
-	                <br>
-	            </p>
-	        </div>
-	    </div>-->
-	</div>
+        <!--<div class="footer">
+            <div class="footer-text">
+                <p>
+                    PoseNet runs with either a <strong>single-pose</strong> or <strong>multi-pose</strong> detection
+                    algorithm. The single person pose detector is faster and more accurate but requires only one subject
+                    present in the image.
+                    <br>
+                </p>
+            </div>
+        </div>-->
+    </div>
     <script src="uploadVideo.js"></script>
 </body>
 </html>
