@@ -695,7 +695,7 @@ function detectPoseInRealTime(video, net) {
 
           filename = "testing_label.txt";
           str = JSON.stringify(keypoints);
-          buffer_array[buffer_array.length] = str;
+          buffer_array[buffer_array.length] = str +'\n';
           content = buffer_array;
           blob = new Blob([content], {type: "text/plain;charset=utf-8"});
 
