@@ -45,6 +45,47 @@
             }
         }
 
+
+          *{
+              margin: 0;
+              padding: 0;
+
+            }
+            .scroll{
+              margin:100px;
+              width: 500px;
+              height: 5px;
+             
+              background: #ccc;
+              position: relative;
+
+               
+            }
+            .bar{
+              width: 10px;
+              height: 20px;
+              background: #369;
+              position: absolute;
+              top: -7px;
+              left: 0;
+              cursor: pointer;
+            }
+            .mask{
+              position: absolute;
+              left: 0;
+              top: 0;
+              background: #369;
+              width: 0;
+              height: 5px;
+            }
+
+            #db{
+                position: relative;
+                right: 240px;
+                top: 30px;
+
+            }
+
         /*
          *  The following loading spinner CSS is from SpinKit project
          *  https://github.com/tobiasahlin/SpinKit
@@ -121,12 +162,23 @@
                 <input type="file" id="videoFiles"/>
             </section>
         </div>
-        <div>
-            <section style="text-align:center;border:none; margin-top:30px;">
-                <input type="button" value="下载按钮" id="downloader_button"/>
+        <div id="db">
+            <section style="text-align:right;border:none; margin-right:10px;">
+                <input type="button" value="Download" id="downloader_button"/>
             </section>
+
         </div>
 
+
+        <div class="scroll" id="scroll" style= "margin-top:10px;">
+            <div class="bar" id="bar">
+            </div>
+            <div class="mask" id="mask"></div>
+
+
+        </div>
+        
+<!--
         <div style="text-align:center;border:none; margin-top:20px;">
             <select id="choose" onchange="TheConfirmBox()">
               <option value="每一帧">每一帧</option>
@@ -135,9 +187,15 @@
               <option value="每十五帧">每十五帧</option>
             </select>
         </div>  
+-->
+
+
+
         <div style="text-align:center;border:none; margin-top:5px;">
             <div id="progress_bar"><div class="percent">0%</div></div>
         </div>
+
+
         <!--<div class="footer">
             <div class="footer-text">
                 <p>
