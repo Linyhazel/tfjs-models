@@ -28,6 +28,7 @@ var _global = typeof window === 'object' && window.window === window
   var content;
   var blob;
   var flag=0;
+  var selection = 2;
 
 
 
@@ -702,7 +703,7 @@ function detectPoseInRealTime(video, net) {
           //blob = new Blob([content], {type: "text/plain;charset=utf-8"});
           blob = new Blob([content],{type: "text/plain;charset=utf-8"});*/
 
-          if(flag%3 == 0 ){
+          if(flag% selection == 0 ){
           filename = "testing_label_fps_ad.txt";
           str = JSON.stringify(keypoints);
           buffer_array[buffer_array.length] ="This is flag:" +flag + "New Keypoint" +str +'\n';
