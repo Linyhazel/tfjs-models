@@ -27,6 +27,7 @@ var _global = typeof window === 'object' && window.window === window
          
   var content;
   var blob;
+  var flag=0;
 
 
 
@@ -681,6 +682,7 @@ function detectPoseInRealTime(video, net) {
         if (guiState.output.showPoints) {
           drawKeypoints(keypoints, minPartConfidence, ctx);
           console.log(keypoints);//17 keypoints to be saved~
+          flag= flag+1;
           
           //file path: "C:/Users/windows/Desktop/output_file/testing_label.txt"
           //array name is buffer_array
@@ -693,11 +695,22 @@ function detectPoseInRealTime(video, net) {
           var blob = new Blob([content], {type: "text/plain;charset=utf-8"});*/
           //saveAs(blob, filename)
 
-          filename = "testing_label.txt";
+          /*filename = "testing_label.txt";
           str = JSON.stringify(keypoints);
-          buffer_array[buffer_array.length] = str +'\n';
+          buffer_array[buffer_array.length] ="This is flag:" +flag + "New Keypoint" +str +'\n';
           content = buffer_array;
-          blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+          //blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+          blob = new Blob([content],{type: "text/plain;charset=utf-8"});*/
+
+          if(flag%3 == 0 ){
+          filename = "testing_label_fps_ad.txt";
+          str = JSON.stringify(keypoints);
+          buffer_array[buffer_array.length] ="This is flag:" +flag + "New Keypoint" +str +'\n';
+          content = buffer_array;
+          //blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+          blob = new Blob([content],{type: "text/plain;charset=utf-8"});
+
+          }
 
         }
         if (guiState.output.showSkeleton) {
