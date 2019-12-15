@@ -43,7 +43,7 @@ var content = str;
 var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
 saveAs(blob, filename);*/
 
-
+//拉动条 source: https://blog.csdn.net/u013217071/article/details/53561238
 var scroll = document.getElementById('scroll');
             var bar = document.getElementById('bar');
             var mask = document.getElementById('mask');
