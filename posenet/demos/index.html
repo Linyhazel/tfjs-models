@@ -3,10 +3,170 @@
   <head>
     <title>Intelligent Sport Movement Scoring Demos</title>
     <style>
-      li{ 
-        color:#F00;
-        font-size:20px;
-        list-style-type:decimal; }
+    * {box-sizing: border-box}
+
+    /* Set height of body and the document to 100% */
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: Arial;
+    }
+
+    /* Style tab links */
+    .tablink {
+      background-color: #555;
+      color: white;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      font-size: 17px;
+      width: 25%;
+    }
+
+    .tablink:hover {
+      background-color: #777;
+    }
+
+    /* Style the tab content (and add height:100% for full page content) */
+    .tabcontent {
+      color: white;
+      display: none;
+      padding: 100px 20px;
+      height: 100%;
+    }
+
+    #FeedVideo {background-color: orange;}
+    #ScoreMovement {background-color: green;}
+    </style>
+    <style>
+        #progress_bar {
+            margin: 10px 0;
+            padding: 3px;
+            border: 1px solid #000;
+            font-size: 14px;
+            clear: both;
+            opacity: 0;
+            -moz-transition: opacity 1s linear;
+            -o-transition: opacity 1s linear;
+            -webkit-transition: opacity 1s linear;
+        }
+        #progress_bar.loading {
+            opacity: 1.0;
+        }
+        #progress_bar .percent {
+            background-color: #99ccff;
+            height: auto;
+            width: 0;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            color: black;
+        }
+
+        .footer-text {
+            max-width: 600px;
+            text-align: center;
+            margin: auto;
+        }
+
+        @media only screen and (max-width: 600px) {
+
+            .footer-text,
+            .dg {
+                display: none;
+            }
+        }
+
+
+          *{
+              margin: 0;
+              padding: 0;
+
+            }
+            .scroll{
+              margin:100px;
+              width: 500px;
+              height: 5px;
+             
+              background: #ccc;
+              position: relative;
+
+               
+            }
+            .bar{
+              width: 10px;
+              height: 20px;
+              background: #369;
+              position: absolute;
+              top: -7px;
+              left: 0;
+              cursor: pointer;
+            }
+            .mask{
+              position: absolute;
+              left: 0;
+              top: 0;
+              background: #369;
+              width: 0;
+              height: 5px;
+            }
+
+            #db{
+                position: relative;
+                right: 240px;
+                top: 30px;
+
+            }
+
+        /*
+         *  The following loading spinner CSS is from SpinKit project
+         *  https://github.com/tobiasahlin/SpinKit
+         */
+        .sk-spinner-pulse {
+            width: 20px;
+            height: 20px;
+            margin: auto 10px;
+            float: left;
+            background-color: #333;
+            border-radius: 100%;
+            -webkit-animation: sk-pulseScaleOut 1s infinite ease-in-out;
+            animation: sk-pulseScaleOut 1s infinite ease-in-out;
+        }
+
+        @-webkit-keyframes sk-pulseScaleOut {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1.0);
+                transform: scale(1.0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes sk-pulseScaleOut {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1.0);
+                transform: scale(1.0);
+                opacity: 0;
+            }
+        }
+
+        .spinner-text {
+            float: left;
+        }
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.3.1/jquery.min.js"></script>
@@ -16,12 +176,94 @@
     <div class="container">
       <br/>
       <h1>Intelligent Sport Movement Scoring</h1>
-      <ul class="list-group">
-        <!--<li><a href='camera.html'>Pose Estimation - Camera feed demo</a></li>-->
+      <button class="tablink" onclick="openPage('FeedVideo', this, 'orange')">Feed Video</button>
+      <button class="tablink" onclick="openPage('ScoreMovement', this, 'green')" id="defaultOpen">Score Movement</button>
+
+      <div id="FeedVideo" class="tabcontent">
+        <!--<h3>Feed Video</h3>-->
+        <div id="info" style='display:none'></div>
+
+        <div id="loading" style='display:flex'>
+            <div class="spinner-text">
+                Loading PoseNet model...
+            </div>
+            <div class="sk-spinner sk-spinner-pulse"></div>
+        </div>
+
+        <div id='main' style='text-align:;'>
+            <video id="videoInput" style="display: none; width: 960px; height: 540px" playsinline controls muted></video>
+            <video id="video" style="display: none" playsinline autoplay></video>
+            <canvas id="output" style="border: double; border-radius: 5px; width: 960px; height: 540px;"/>
+        </div>
+
+        <div>
+            <section style="text-align:;border:none; margin-top:5px;">
+                <input type="file" id="videoFiles"/>
+            </section>
+        </div>
+
+        <div id="db">
+            <section style="text-align:right;border:none; margin-right:10px;">
+                <input type="button" value="Download" id="downloader_button"/>
+            </section>
+        </div>
+
+        <div class="scroll" id="scroll" style= "margin-top:10px;">
+            <div class="bar" id="bar"></div>
+            <div class="mask" id="mask"></div>
+        </div>
+
+        <div style="text-align:;border:none; margin-top:50px;">
+            <div id="progress_bar"><div class="percent">0%</div></div>
+        </div>
+      </div>
+
+      <div id="ScoreMovement" class="tabcontent">
+        <!--<h3>Score Movement</h3>-->
+        <div style=''>
+            <video id="videoInputP" style="display: none" playsinline controls loop muted></video>
+            <video id="videoP" style="display: none" playsinline autoplay></video>
+            <canvas style="width: 960px; height: 540px; border: double;" id="outputP"></canvas>
+        </div>
+        <div tyle="margin-top: 5px;">
+            <input type="file" id="videoFilesP"/>
+            <button id="scoreBtn" onclick="giveScore()">Score</button>
+            <label id="scoreLbl">Score is </label>
+        </div>
+        <br/> 
+      </div>
+
+      <!--<ul class="list-group">
         <li class="list-group-item"><a href='uploadVideo.html'>Feed Video</a></li>
         <li class="list-group-item"><a href='scoring.html'>Score Movement</a></li>
-        <!--<li><a href='coco.html'>Pose Estimation - Image demo</a></li>-->
-      </ul>
+      </ul>-->
     </div>
+
+
+  <script>
+  function openPage(pageName,elmnt,color) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].style.backgroundColor = "";
+    }
+    document.getElementById(pageName).style.display = "block";
+    elmnt.style.backgroundColor = color;
+  }
+
+  // Get the element with id="defaultOpen" and click on it
+  document.getElementById("defaultOpen").click();
+  </script>
+
+  <script type="text/javascript">
+      function giveScore(){
+          document.getElementById('scoreLbl').innerHTML="Score is 10!" ;
+      }
+  </script>
+  <script src="uploadVideo.js"></script>
   </body>
 </html>
