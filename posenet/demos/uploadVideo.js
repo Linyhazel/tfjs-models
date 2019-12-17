@@ -28,7 +28,8 @@ var _global = typeof window === 'object' && window.window === window
   var content;
   var blob;
   var flag=0;
-  var selection = 2;
+  var selection=4;
+  var selector;
 
 
 
@@ -64,7 +65,7 @@ var scroll = document.getElementById('scroll');
                 mask.style.width = barleft +'px' ;
                 that.style.left = barleft + "px";
                 //ptxt.innerHTML = "已经走了" + parseInt(barleft/(scroll.offsetWidth-bar.offsetWidth) * 100) + "%";
-         
+                selector = Math.round(barleft/(scroll.offsetWidth-bar.offsetWidth) * 10);
                 //防止选择内容--当拖动鼠标过快时候，弹起鼠标，bar也会移动，修复bug
                 window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
               }
@@ -703,8 +704,8 @@ function detectPoseInRealTime(video, net) {
           //blob = new Blob([content], {type: "text/plain;charset=utf-8"});
           blob = new Blob([content],{type: "text/plain;charset=utf-8"});*/
 
-          if(flag% selection == 0 ){
-          filename = "testing_label_fps_ad.txt";
+          if(flag% selector == 0 ){
+          filename = "testing_label"+"_"+flag+"_slection"+selection+"_selector"+selector+".txt";
           str = JSON.stringify(keypoints);
           buffer_array[buffer_array.length] ="This is flag:" +flag + "New Keypoint" +str +'\n';
           content = buffer_array;
