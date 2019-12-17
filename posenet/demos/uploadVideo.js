@@ -33,6 +33,7 @@ var _global = typeof window === 'object' && window.window === window
 
 
 
+
 /*
 var fso=new ActiveXObject(Scripting.FileSystemObject); 
 var f=fso.createtextfile("C:\Users\windows\Desktop\output file\testing.txt",2,true); 
@@ -66,6 +67,8 @@ var scroll = document.getElementById('scroll');
                 that.style.left = barleft + "px";
                 //ptxt.innerHTML = "已经走了" + parseInt(barleft/(scroll.offsetWidth-bar.offsetWidth) * 100) + "%";
                 selector = Math.round(barleft/(scroll.offsetWidth-bar.offsetWidth) * 10);
+                //window.myDiv.innerHTML=getcookie("username");
+                //document.getElementById("select").href="Every Keypoint Selected "+selector;
                 //防止选择内容--当拖动鼠标过快时候，弹起鼠标，bar也会移动，修复bug
                 window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
               }
@@ -705,7 +708,8 @@ function detectPoseInRealTime(video, net) {
           blob = new Blob([content],{type: "text/plain;charset=utf-8"});*/
 
           if(flag% selector == 0 ){
-          filename = "testing_label"+"_"+flag+"_slection"+selection+"_selector"+selector+".txt";
+          //filename = "testing_label"+"_"+flag+"_slection"+selection+"_selector"+selector+".txt";
+          filename = "testing_label"+"_"+flag+"_keypoints"+".txt";
           str = JSON.stringify(keypoints);
           buffer_array[buffer_array.length] ="This is flag:" +flag + "New Keypoint" +str +'\n';
           content = buffer_array;
