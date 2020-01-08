@@ -3,9 +3,10 @@ import base64
 import json
 
 ### Parameters ###
-username = 'testuser'
-password = 'LnumzUL47P6'
-server_url = "https://sipatdev.eastasia.cloudapp.azure.com"
+username = '4Dpeteacher'
+password = 'Ab123456'
+#server_url = "https://sipatdev.eastasia.cloudapp.azure.com" for development
+server_url = "https://api.funtomove-jc.hk"
 
 ### HELPER FUNCTIONS ###
 def constructUrl(path):
@@ -71,13 +72,13 @@ if(login_token != 0):
 
     #save txt file for both score and video
     for key in score_dic:
-        filepath_score = key+"_score.txt"
+        filepath_score = "video_label\\"+key+"_score.txt"
         score_file = open(filepath_score,"w")
-        score_file.write(score_dic[key])
+        score_file.write(score_dic[key][:-1])
         score_file.close()
 
-        filepath_video = key+"_video.txt"
+        filepath_video = "video\\"+key+"_video.txt"
         video_file = open(filepath_video, "w")
-        video_file.write(video_dic[key])
+        video_file.write(video_dic[key][:-1])
         video_file.close()
         
