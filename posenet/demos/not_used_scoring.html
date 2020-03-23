@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Intelligent Sport Movement Scoring</title>
+    <style>
+     
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <script src="bootstrap-4.3.1-dist/css/bootstrap.min.css/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div id='main' class="container" style="background-color: #e6f3ff">
+        <br/>
+        <h1>Score Movement</h1>
+        <div style=''>
+            <video id="videoInput" style="display: none" playsinline controls loop muted></video>
+            <video id="video" style="display: none" playsinline autoplay></video>
+            <canvas style="width: 960px; height: 540px; border: double;" id="output"></canvas>
+        </div>
+        <div tyle="margin-top: 5px;">
+            <input type="file" id="videoFiles"/>
+            <button id="scoreBtn" onclick="giveScore()">Score</button>
+            <label id="scoreLbl">Score is </label>
+        </div>
+        <br/>
+    </div>
+    <!--<script src="scoring.js"></script>-->
+    <script type="text/javascript">
+        function giveScore(){
+            document.getElementById('scoreLbl').innerHTML="Score is 10!" ;
+        }
+    </script>
+</body>
+</html>

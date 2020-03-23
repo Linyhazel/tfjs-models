@@ -178,17 +178,17 @@
       <h1>Intelligent Sport Movement Scoring</h1>
       <button class="tablink" onclick="openPage('FeedVideo', this, 'orange')">Feed Video</button>
       <button class="tablink" onclick="openPage('ScoreMovement', this, 'green')" id="defaultOpen">Score Movement</button>
+      
+      <div id="loading" style='display:flex; '>
+          <div class="spinner-text">
+              Loading PoseNet model...
+          </div>
+          <div class="sk-spinner sk-spinner-pulse"></div>
+      </div>
 
       <div id="FeedVideo" class="tabcontent">
         <!--<h3>Feed Video</h3>-->
         <div id="info" style='display:none'></div>
-
-        <div id="loading" style='display:flex'>
-            <div class="spinner-text">
-                Loading PoseNet model...
-            </div>
-            <div class="sk-spinner sk-spinner-pulse"></div>
-        </div>
 
         <div id='main' style='text-align:;'>
             <video id="videoInput" style="display: none; width: 960px; height: 540px" playsinline controls muted></video>
@@ -210,15 +210,10 @@
 
         <div class="scroll" id="scroll" style= "margin-top:10px;">
             <div class="bar" id="bar"></div>
-
             <div class="mask" id="mask"></div>
             <br/>
             <label id="FPSlabel1">Every   Keypoint Selected</label>
-            
-
         </div>
-          
-
 
         <div style="text-align:;border:none; margin-top:50px;">
             <div id="progress_bar"><div class="percent">0%</div></div>
@@ -228,22 +223,30 @@
       <div id="ScoreMovement" class="tabcontent">
         <!--<h3>Score Movement</h3>-->
         <div style=''>
-            <video id="videoInputP" style="display: none" playsinline controls loop muted></video>
-            <video id="videoP" style="display: none" playsinline autoplay></video>
-            <canvas style="width: 960px; height: 540px; border: double;" id="outputP"></canvas>
+            <video id="scoringVideo" playsinline style="-moz-transform: scaleX(-1);
+                -o-transform: scaleX(-1);
+                -webkit-transform: scaleX(-1);
+                transform: scaleX(-1);
+                display: none;">
+            </video>
+            <canvas style="width: 960px; height: 540px; border: double;" id="scoringOutput"></canvas>
         </div>
         <div tyle="margin-top: 5px;">
-            <input type="file" id="videoFilesP"/>
-            <button id="scoreBtn" onclick="giveScore()">Score</button>
+            <!--<input type="file" id="videoFilesP"/>-->
+            <!--<section style="text-align:center;border:none; margin-top:20px;">
+                <button id="start-recording">Start Recording</button>
+                <button id="stop-recording" disabled>Stop Recording</button>
+            </section>-->
+            <!--<button id="scoreBtn" onclick="giveScore()">Score</button>-->
             <label id="scoreLbl">Score is </label>
         </div>
         <br/> 
       </div>
 
-      <!--<ul class="list-group">
-        <li class="list-group-item"><a href='uploadVideo.html'>Feed Video</a></li>
-        <li class="list-group-item"><a href='scoring.html'>Score Movement</a></li>
-      </ul>-->
+      <ul class="list-group">
+        <!--<li class="list-group-item"><a href='camera.html'>Feed Video</a></li>-->
+        <!--<li class="list-group-item"><a href='scoring.html'>Score Movement</a></li>-->
+      </ul>
     </div>
 
 
@@ -261,16 +264,11 @@
     document.getElementById(pageName).style.display = "block";
     elmnt.style.backgroundColor = color;
   }
-
   // Get the element with id="defaultOpen" and click on it
   document.getElementById("defaultOpen").click();
   </script>
 
-  <script type="text/javascript">
-      function giveScore(){
-          document.getElementById('scoreLbl').innerHTML="Score is 10!" ;
-      }
-  </script>
   <script src="uploadVideo.js"></script>
+  <script src="scoring_realT.js"></script>
   </body>
 </html>

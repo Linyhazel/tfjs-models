@@ -84,14 +84,14 @@
         <div class="sk-spinner sk-spinner-pulse"></div>
     </div>
     <div id='main' style='text-align:center; display:none'>
-        <video id="video" playsinline style=" -moz-transform: scaleX(-1);
+        <video id="scoringVideo" playsinline style=" -moz-transform: scaleX(-1);
         -o-transform: scaleX(-1);
         -webkit-transform: scaleX(-1);
         transform: scaleX(-1);
         display: none;
         ">
         </video>
-        <canvas id="output" />
+        <canvas id="scoringOutput" />
     </div>
     <div class="footer">        
         <div>
@@ -112,7 +112,7 @@
                 <i>higher</i> image scale factor results in higher accuracy but lower speed. </p>
         </div>
     </div>
-    <script src="camera.js"></script>
+    <script src="scoring.js"></script>
 </body>
 
 </html>

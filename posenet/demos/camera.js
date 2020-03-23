@@ -305,7 +305,7 @@ async function setupCamera() {
         'Browser API navigator.mediaDevices.getUserMedia not available');
   }
 
-  const video = document.getElementById('video');
+  const video = document.getElementById('scoringVideo');
   video.width = videoWidth;
   video.height = videoHeight;
 
@@ -573,7 +573,7 @@ function setupFPS() {
  * happens. This function loops with a requestAnimationFrame method.
  */
 function detectPoseInRealTime(video, net) {
-  const canvas = document.getElementById('output');
+  const canvas = document.getElementById('scoringOutput');
   const ctx = canvas.getContext('2d');
 
   // since images are being fed from a webcam, we want to feed in the

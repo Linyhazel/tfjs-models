@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PoseNet - Video Feed Demo</title>
+    <style>
+        #progress_bar {
+            margin: 10px 0;
+            padding: 3px;
+            border: 1px solid #000;
+            font-size: 14px;
+            clear: both;
+            opacity: 0;
+            -moz-transition: opacity 1s linear;
+            -o-transition: opacity 1s linear;
+            -webkit-transition: opacity 1s linear;
+        }
+        #progress_bar.loading {
+            opacity: 1.0;
+        }
+        #progress_bar .percent {
+            background-color: #99ccff;
+            height: auto;
+            width: 0;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            color: black;
+        }
+
+        .footer-text {
+            max-width: 600px;
+            text-align: center;
+            margin: auto;
+        }
+
+        @media only screen and (max-width: 600px) {
+
+            .footer-text,
+            .dg {
+                display: none;
+            }
+        }
+
+
+          *{
+              margin: 0;
+              padding: 0;
+
+            }
+            .scroll{
+              margin:100px;
+              width: 500px;
+              height: 5px;
+             
+              background: #ccc;
+              position: relative;
+
+               
+            }
+            .bar{
+              width: 10px;
+              height: 20px;
+              background: #369;
+              position: absolute;
+              top: -7px;
+              left: 0;
+              cursor: pointer;
+            }
+            .mask{
+              position: absolute;
+              left: 0;
+              top: 0;
+              background: #369;
+              width: 0;
+              height: 5px;
+            }
+
+            #db{
+                position: relative;
+                right: 240px;
+                top: 30px;
+
+            }
+
+        /*
+         *  The following loading spinner CSS is from SpinKit project
+         *  https://github.com/tobiasahlin/SpinKit
+         */
+        .sk-spinner-pulse {
+            width: 20px;
+            height: 20px;
+            margin: auto 10px;
+            float: left;
+            background-color: #333;
+            border-radius: 100%;
+            -webkit-animation: sk-pulseScaleOut 1s infinite ease-in-out;
+            animation: sk-pulseScaleOut 1s infinite ease-in-out;
+        }
+
+        @-webkit-keyframes sk-pulseScaleOut {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1.0);
+                transform: scale(1.0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes sk-pulseScaleOut {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1.0);
+                transform: scale(1.0);
+                opacity: 0;
+            }
+        }
+
+        .spinner-text {
+            float: left;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container" style="background-color: #e6f3ff">
+        <br/>
+        <h1>Feed Video</h1>
+        <div id="info" style='display:none'>
+        </div>
+
+        <div id="loading" style='display:flex'>
+            <div class="spinner-text">
+                Loading PoseNet model...
+            </div>
+            <div class="sk-spinner sk-spinner-pulse"></div>
+        </div>
+
+        <div id='main' style='text-align:center;'>
+            <video id="videoInput" style="display: none; width: 960px; height: 540px" playsinline controls muted></video>
+            <video id="video" style="display: none" playsinline autoplay></video>
+            <canvas id="output" style="border: double; border-radius: 5px; width: 960px; height: 540px;"/>
+        </div>
+        <div>
+            <section style="text-align:center;border:none; margin-top:5px;">
+                <input type="file" id="videoFiles"/>
+            </section>
+        </div>
+        <div id="db">
+            <section style="text-align:right;border:none; margin-right:10px;">
+                <input type="button" value="Download" id="downloader_button"/>
+            </section>
+        </div>
+
+        <div class="scroll" id="scroll" style= "margin-top:10px;">
+            <div class="bar" id="bar">
+            </div>
+            <div class="mask" id="mask"></div>
+        </div>
+        
+<!--
+        <div style="text-align:center;border:none; margin-top:20px;">
+            <select id="choose" onchange="TheConfirmBox()">
+              <option value="每一帧">每一帧</option>
+              <option value="每五帧">每五帧</option>
+              <option value="每十帧">每十帧</option>
+              <option value="每十五帧">每十五帧</option>
+            </select>
+        </div>  
+-->
+        <div style="text-align:center;border:none; margin-top:5px;">
+            <div id="progress_bar"><div class="percent">0%</div></div>
+        </div>
+
+    </div>
+    <script src="uploadVideo.js"></script>
+</body>
+</html>
