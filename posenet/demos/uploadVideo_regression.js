@@ -552,8 +552,8 @@ function detectPoseInRealTime(video, net) {
         upmost_y = 540;
         downmost_y = 0;
         saved_coordinates = [];
-        document.getElementsByClassName("loader")[0].style.display = 'inline';
-        document.getElementsByClassName("loader")[1].style.display = 'inline';
+        document.getElementsByClassName("loader")[0].style.display = '';
+        document.getElementsByClassName("loader")[1].style.display = '';
         document.getElementById('genreLbl0').innerHTML = "";
         document.getElementById('scoreLbl0').innerHTML = "";
       }

@@ -164,16 +164,16 @@ videoInput.addEventListener('ended', (event) => {
       }
     }
   }
-  var pad_no = 40-saved_coordinates.length;
+  var pad_no = 100-saved_coordinates.length;
   if(pad_no>0){
     var padding = tf.zeros([pad_no, 34]);
     input = tf.concat([tf.tensor2d(saved_coordinates), padding], 0);
   }
   else{
-    input = tf.tensor2d(saved_coordinates.slice(-41, -1));
+    input = tf.tensor2d(saved_coordinates.slice(-101, -1));
   }
 
-  var predict_y = model.predict(input.reshape([1, 40, 34]));
+  var predict_y = model.predict(input.reshape([1, 100, 34]));
   console.log(predict_y.dataSync());
   var predict_values = translate(predict_y.dataSync());
   console.log(predict_values);
@@ -555,8 +555,8 @@ function detectPoseInRealTime(video, net) {
         upmost_y = 540;
         downmost_y = 0;
         saved_coordinates = [];
-        document.getElementsByClassName("loader")[0].style.display = 'inline';
-        document.getElementsByClassName("loader")[1].style.display = 'inline';
+        document.getElementsByClassName("loader")[0].style.display = '';
+        document.getElementsByClassName("loader")[1].style.display = '';
         document.getElementById('genreLbl0').innerHTML = "";
         document.getElementById('scoreLbl0').innerHTML = "";
       }
