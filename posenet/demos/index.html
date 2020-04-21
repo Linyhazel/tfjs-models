@@ -21,8 +21,9 @@
       outline: none;
       cursor: pointer;
       padding: 14px 16px;
-      font-size: 17px;
+      font-size: 20px;
       width: 25%;
+      font-family: fantasy;
     }
 
     .tablink:hover {
@@ -37,8 +38,8 @@
       height: 100%;
     }
 
-    #FeedVideo {background-color: orange;}
-    #ScoreMovement {background-color: green;}
+    #FeedVideo {background-color: #bcf5ee;}
+    #ScoreMovement {background-color: #d7fc8d;}
     </style>
     <style>
         #progress_bar {
@@ -56,22 +57,9 @@
             opacity: 1.0;
         }
         #progress_bar .percent {
-            background-color: #99ccff;
+            background-color: darkblue;
             height: auto;
             width: 0;
-        }
-        .footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            color: black;
-        }
-
-        .footer-text {
-            max-width: 600px;
-            text-align: center;
-            margin: auto;
         }
 
         @media only screen and (max-width: 600px) {
@@ -128,9 +116,9 @@
          *  https://github.com/tobiasahlin/SpinKit
          */
         .sk-spinner-pulse {
-            width: 20px;
-            height: 20px;
-            margin: auto 10px;
+            width: 30px;
+            height: 30px;
+            margin: auto 20px;
             float: left;
             background-color: #333;
             border-radius: 100%;
@@ -165,8 +153,90 @@
         }
 
         .spinner-text {
+            font-size: 20px;
             float: left;
+            font-weight: bold;
+            color: blue;
         }
+
+        #scoreLbl, #scoreLbl0{
+          font-size: 35px;
+          font-weight: bold;
+          color: #fc3546;
+        }
+        #scoreLbl1, #scoreLbl01{
+          font-size: 28px;
+          font-weight: bold;
+          color: #555;
+        }
+        #genreLbl, #genreLbl0{
+          font-size: 35px;
+          font-weight: bold;
+          color: #fc3546;
+        }
+        #genreLbl1, #genreLbl01{
+          font-size: 28px;
+          font-weight: bold;
+          color: #555;
+        }
+
+.loader,
+.loader:before,
+.loader:after {
+  border-radius: 50%;
+  width: 2.5em;
+  height: 2.5em;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation: load7 1.8s infinite ease-in-out;
+  animation: load7 1.8s infinite ease-in-out;
+}
+.loader {
+  color: #fc3546;
+  font-size: 3px;
+  margin: 0px auto;
+  position: relative;
+  text-indent: -9999em;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.loader:before,
+.loader:after {
+  content: '';
+  position: absolute;
+  top: 0;
+}
+.loader:before {
+  left: -3.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.loader:after {
+  left: 3.5em;
+}
+@-webkit-keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
+@keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.3.1/jquery.min.js"></script>
@@ -176,52 +246,58 @@
     <div class="container">
       <br/>
       <h1>Intelligent Sport Movement Scoring</h1>
-      <button class="tablink" onclick="openPage('FeedVideo', this, 'orange')">Feed Video</button>
-      <button class="tablink" onclick="openPage('ScoreMovement', this, 'green')" id="defaultOpen">Score Movement</button>
-      
-      <div id="loading" style='display:flex; '>
-          <div class="spinner-text">
-              Loading PoseNet model...
-          </div>
-          <div class="sk-spinner sk-spinner-pulse"></div>
-      </div>
+
+      <button class="tablink" onclick="openPage('FeedVideo', this, 'darkblue')" id="defaultOpen">Feed Video</button>
+      <button class="tablink" onclick="openPage('ScoreMovement', this, 'green')" >Score Movement</button>
 
       <div id="FeedVideo" class="tabcontent">
         <!--<h3>Feed Video</h3>-->
+        <div id="loading" style='display:flex; '>
+            <div class="spinner-text">
+                Loading model...
+            </div>
+            <div class="sk-spinner sk-spinner-pulse"></div>
+        </div>
         <div id="info" style='display:none'></div>
 
         <div id='main' style='text-align:;'>
             <video id="videoInput" style="display: none; width: 960px; height: 540px" playsinline controls muted></video>
             <video id="video" style="display: none" playsinline autoplay></video>
-            <canvas id="output" style="border: double; border-radius: 5px; width: 960px; height: 540px;"/>
+            <canvas id="output" style="border: double; border-radius: 5px; width: 960px; height: 540px; background-color: #555"/>
         </div>
 
         <div>
-            <section style="text-align:;border:none; margin-top:5px;margin-left:100px;">
+            <section style="text-align:;border:none; margin-top:5px;">
                 <input type="file" id="videoFiles"/>
             </section>
         </div>
 
-        <div id="db">
-            <section style="text-align:right;border:none; margin-right:10px;">
-                <input type="button" value="Download" id="downloader_button"/>
-            </section>
+        <div>
+            <label id="genreLbl01">Activity is&nbsp;&nbsp;</label>
+            <label class="loader" style="display:none;"></label>
+            <label id="genreLbl0"></label>
+        </div>
+        <div>
+            <label id="scoreLbl01">Score is&nbsp;&nbsp;</label>
+            <label class="loader" style="display:none;"></label>
+            <label id="scoreLbl0"></label>
         </div>
 
-        <div class="scroll" id="scroll" style= "margin-top:10px;">
-            <div class="bar" id="bar"></div>
-            <div class="mask" id="mask"></div>
-            <br/>
-            <label id="FPSlabel1">Every   Keypoint Selected</label>
-        </div>
-
-        <div style="text-align:;border:none; margin-top:50px;">
+        <div style="text-align:;border:none; margin-top:0px;">
             <div id="progress_bar"><div class="percent">0%</div></div>
         </div>
       </div>
 
       <div id="ScoreMovement" class="tabcontent">
         <!--<h3>Score Movement</h3>-->
+
+        <!--<div id="loading" style='display:flex; '>
+            <div class="spinner-text">
+                Loading model...
+            </div>
+            <div class="sk-spinner sk-spinner-pulse"></div>
+        </div>-->
+
         <div style=''>
             <video id="scoringVideo" playsinline style="-moz-transform: scaleX(-1);
                 -o-transform: scaleX(-1);
@@ -229,24 +305,22 @@
                 transform: scaleX(-1);
                 display: none;">
             </video>
-            <canvas style="width: 960px; height: 540px; border: double;" id="scoringOutput"></canvas>
+            <canvas style="width: 960px; height: 540px; border: double; background-color: #555" id="scoringOutput"></canvas>
         </div>
         <div tyle="margin-top: 5px;">
-            <!--<input type="file" id="videoFilesP"/>-->
-            <!--<section style="text-align:center;border:none; margin-top:20px;">
-                <button id="start-recording">Start Recording</button>
-                <button id="stop-recording" disabled>Stop Recording</button>
-            </section>-->
-            <!--<button id="scoreBtn" onclick="giveScore()">Score</button>-->
-            <label id="scoreLbl">Score is </label>
+            <div>
+              <label id="genreLbl1">Activity is&nbsp;&nbsp;</label>
+              <label id="genreLbl"></label>
+            </div>
+            <div>
+              <label id="scoreLbl1">Score is&nbsp;&nbsp;</label>
+              <label id="scoreLbl"></label>
+            </div>
+            <!--<div class="sk-spinner sk-spinner-pulse"></div>-->
         </div>
         <br/> 
       </div>
 
-      <ul class="list-group">
-        <!--<li class="list-group-item"><a href='camera.html'>Feed Video</a></li>-->
-        <!--<li class="list-group-item"><a href='scoring.html'>Score Movement</a></li>-->
-      </ul>
     </div>
 
 
@@ -268,7 +342,7 @@
   document.getElementById("defaultOpen").click();
   </script>
 
-  <script src="uploadVideo.js"></script>
-  <script src="scoring_realT.js"></script>
+  <script src="uploadVideo_classification.js"></script>
+  <!--<script src="scoring_realT_regression.js"></script>-->
   </body>
 </html>
