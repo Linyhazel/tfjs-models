@@ -149,7 +149,7 @@ videoInput.addEventListener('loadeddata', function(e) {
 }, false);
 videoInput.addEventListener('ended', (event) => {
   var input;
-  console.log('Video stopped');
+  console.log('Video stopped', count);
 
   width = rightmost_x - leftmost_x;
   height = downmost_y - upmost_y;
@@ -233,8 +233,8 @@ const guiState = {
   },
   output: {
     showVideo: true,
-    showSkeleton: true,
-    showPoints: true,
+    showSkeleton: false,
+    showPoints: false,
     showBoundingBox: false,
   },
   net: null,
